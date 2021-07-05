@@ -1,16 +1,12 @@
 [submodule "sources/poky"]
 	path = sources/poky
 	url = https://git.yoctoproject.org/git/poky
-	branch = gatesgarth
-[submodule "sources/meta-openembedded"]
-	path = sources/meta-openembedded
-	url = https://github.com/openembedded/meta-openembedded.git
-	branch = gatesgarth
+	branch = hardknott
 [submodule "sources/meta-intel"]
 	path = sources/meta-intel
 	url = https://git.yoctoproject.org/git/meta-intel
-	branch = gatesgarth
+	branch = hardknott
 [submodule "sources/meta-tqmx86"]
 	path = sources/meta-tqmx86
 	url = ../meta-tqmx86.git
-	branch = gatesgarth
+	branch = hardknott
