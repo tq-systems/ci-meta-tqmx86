@@ -85,9 +85,10 @@ def mirrorConfiguration(directoryName) {
     dir("${directoryName}") {
         sshagent(['jenkins-master-key']) {
            echo "create mirror packages for all machines of config ${directoryName} ..."
-           sh "rm -rf ${env.BUILD_DIR}-mirror"
+           sh "find . -maxdepth 1 -wholename '*-mirror*' | xargs -n1 -P4 -I% rsync --delete-before -a ${env.WORKSPACE}/empty/ %/"
            sh "./ci/build-all ${env.BUILD_DIR}-mirror \$(basename \$(pwd)) mirror"
-           sh "cp -ruv ${env.BUILD_DIR}-mirror/downloads/* ${env.WORKSPACE}/${env.DL_DIR}"
+           sh "find . -maxdepth 2 -wholename '*-mirror*downloads' | xargs -n1 -I% rsync -rl --checksum --ignore-existing --exclude 'git2*' %/ ${env.WORKSPACE}/${env.DL_DIR}/"
+           sh "find . -maxdepth 1 -wholename '*-mirror*' | xargs -n1 -P4 -I% rsync --delete-before -a ${env.WORKSPACE}/empty/ %/"
         }
     }
 }
@@ -144,6 +145,10 @@ def handleBuildCause(directoryName) {
 }
 
 def handleGlobalData(directoryName) {
+
+    echo "create empty dir, could be used by rsync for deleting folders"
+    sh "mkdir --parents ${env.WORKSPACE}/empty"
+
     def causes = currentBuild.getBuildCauses()
 
     for(cause in causes) {
@@ -155,7 +160,8 @@ def handleGlobalData(directoryName) {
          */
         if (!reason.contains("SCMTriggerCause")) {
             println "clear ${directoryName}/${env.DL_DIR} ..."
-            sh "pwd; ls -al; time rm -rf ${directoryName}/${env.DL_DIR}; ls -1"
+            sh "find . -maxdepth 1 -wholename '${directoryName}/${env.DL_DIR}' | xargs -n1 -P4 -I% rsync --delete-before -a ${env.WORKSPACE}/empty/ %/"
+
         }
         /*
          * for nightly builds: do sstate cache maintenance
