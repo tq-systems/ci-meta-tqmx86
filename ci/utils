@@ -180,6 +180,7 @@ get_machines () {
 ####
 get_distros_for_config () {
 	local chosen_distros="poky"
+	local config=${1}
 
 	if ! valid_config ${config}; then
 		error "invalid config: ${config}"
