@@ -17,8 +17,7 @@ CWD=$(pwd)
 PROGNAME="setup-environment"
 SCRIPTDIR="${CWD}/ci"
 CONFIG_TEMPLATE=x86
-# conf templates
-TEMPLATECONF=${CWD}/sources/template/conf/templates/ci
+TEMPLATEDIR=${CWD}/sources/template/conf/templates
 
 DEFAULT_DISTRO_x86="poky"
 
@@ -69,7 +68,6 @@ See README.md for valid combinations of <machine>, <distro> and <config>
 
 clean_up() {
 	unset ARGS
-	unset BBLAYERS_TEMPLATE
 	unset CONFIG_TEMPLATE
 	unset CWD
 	unset DISTRO_VAR
@@ -82,6 +80,7 @@ clean_up() {
 	unset SCRIPTDIR
 	unset SHORTOPTS
 	unset TEMPLATECONF
+	unset TEMPLATEDIR
 	unset THE_DISTRO
 	unset THE_MACHINE
 	unset VALID_MACHINE
@@ -122,10 +121,9 @@ fi
 if [ -n "${2}" ]; then
     CONFIG_TEMPLATE=${2}
 fi
+TEMPLATECONF=${TEMPLATEDIR}/${CONFIG_TEMPLATE}
 
-BBLAYERS_TEMPLATE=bblayers.conf.${CONFIG_TEMPLATE}
-
-if [ ! -e $1/conf/local.conf.sample ]; then
+if [ ! -e ${1}/conf/local.conf.sample ]; then
     build_dir_setup_enabled="true"
 else
     build_dir_setup_enabled="false"
@@ -186,7 +184,7 @@ export PATH="`echo ${PATH} | sed 's/\(:.\|:\)*:/:/g;s/^.\?://;s/:.\?$//'`"
 
 generated_config=
 if [ "$build_dir_setup_enabled" = "true" ]; then
-    "${SCRIPTDIR}/setup_builddir" confdir_setup "${TEMPLATECONF}" "${BBLAYERS_TEMPLATE}"
+    "${SCRIPTDIR}/setup_builddir" confdir_setup "${TEMPLATECONF}"
     if [ "${?}" -ne "0" ]; then
         clean_up && return 1
     fi
@@ -212,8 +210,6 @@ Your build environment has been configured with:
 EOF
 else
     echo "Your configuration files at $1 have not been touched."
-    cmp conf/bblayers.conf conf/bblayers.conf.tmpl > /dev/null
-    [ "$?" -ne "0" ] && echo "Your conf/bblayers.conf (or the template changed)"
 fi
 
 clean_up
