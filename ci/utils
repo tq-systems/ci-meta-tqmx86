@@ -293,54 +293,59 @@ get_configs_in_workspace () {
 }
 
 ####
+# func:   valid_config
+# brief:  check if config is in list of supported configs
+# param:  $1 - config file
+# param:  $2 - config
+####
+valid_config() {
+	local fname=${1}
+	local config=${2}
+	local supported_configs=$(get_configs_in_workspace ${fname})
+
+	echo ${supported_configs} | grep -wq "${config}"
+}
+
+####
 # func:   get_images
 # brief:  return image based on distro
-# param:  $1 - distro
+# param:  $1 - config file
+# param:  $2 - distro
 # return: image
 ####
 get_images () {
-	local distro=${1}
-	local chosen_images="core-image-base"
+	local fname=${1}
+	local distro=${2}
 
 	if [ -z "${LOCAL}" ] || [ -z "${IMAGE_LIST}" ]
 	then
-		echo "${chosen_images}"
+		local choosen_images=$(get_images_for_distro ${fname} ${distro})
+		echo "${choosen_images}"
 	else
 		echo "${IMAGE_LIST}"
 	fi
 }
 
 ####
-# func:   valid_config
-# brief:  check if config is in list of supported configs
-# param:  $1 - config
-####
-valid_config() {
-	local config=${1}
-	local supported_configs="$(${SCRIPTPATH}/ls-configs) --file"
-
-	echo ${supported_configs} | grep -wq "${config}"
-}
-
-####
 # func:   get_machines
 # brief:  return buildable machines for config
-# param:  $1 - config (x86)
-# return: list of machines
+# param:  $1 - config file
+# param:  $2 - config (imx/ls/ti/mainline)
+# return: list of machines for given configuration
 ####
 get_machines () {
-	local config=${1}
-	local all_machines=$("${SCRIPTPATH}"/ls-machines)
-	local chosen_machines=${all_machines}
+	local fname=${1}
+	local config=${2}
 
-	if ! valid_config ${config}; then
+	if ! valid_config ${fname} ${config}; then
 		error "invalid config: ${config}"
 		return -1
 	fi
 
 	if [ -z "${LOCAL}" ] || [ -z "${MACHINE_LIST}" ]
 	then
-		echo "${chosen_machines}"
+		local choosen_machines=$(get_machines_for_config "${fname}" ${config})
+		echo "${choosen_machines}"
 	else
 		echo "${MACHINE_LIST}"
 	fi
@@ -348,22 +353,24 @@ get_machines () {
 
 ####
 # func:   get_distros
-# brief:  return buildable machines for config
-# param:  $1 - config (x86)
-# return: list of supported distros for the given config
+# brief:  return buildable distros for config
+# param:  $1 - config file
+# param:  $2 - config (imx/ls/ti/mainline)
+# return: list of machines
 ####
-get_distros_for_config () {
-	local chosen_distros="poky"
-	local config=${1}
+get_distros () {
+	local fname=${1}
+	local config=${2}
 
-	if ! valid_config ${config}; then
+	if ! valid_config ${fname} ${config}; then
 		error "invalid config: ${config}"
 		return -1
 	fi
 
 	if [ -z "${LOCAL}" ] || [ -z "${DISTRO_LIST}" ]
 	then
-		echo "${chosen_distros}"
+		local choosen_distros=$(get_distros_for_config "${fname}" ${config})
+		echo "${choosen_distros}"
 	else
 		echo "${DISTRO_LIST}"
 	fi
