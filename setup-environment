@@ -51,7 +51,7 @@ Supported machines:
 $("${SCRIPTDIR}/ls-machines" meta-tq/meta-tq)
 
 Available poky distros:
-$("${SCRIPTDIR}/ls-distros" poky/meta-poky)
+$("${SCRIPTDIR}/ls-distros" --dir=sources/poky/meta-poky)
 
 Examples:
 
