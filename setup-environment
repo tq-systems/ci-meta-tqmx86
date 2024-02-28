@@ -48,7 +48,7 @@ Supported configs:
 $(${SCRIPTDIR}/ls-configs --file)
 
 Supported machines:
-$("${SCRIPTDIR}/ls-machines" meta-tq/meta-tq)
+$("${SCRIPTDIR}/ls-machines" --dir=sources/meta-tq/meta-tq)
 
 Available poky distros:
 $("${SCRIPTDIR}/ls-distros" --dir=sources/poky/meta-poky)
