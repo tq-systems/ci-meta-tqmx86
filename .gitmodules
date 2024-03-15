@@ -1,12 +1,12 @@
 [submodule "sources/poky"]
 	path = sources/poky
 	url = https://git.yoctoproject.org/git/poky
-	branch = kirkstone
+	branch = scarthgap
 [submodule "sources/meta-intel"]
 	path = sources/meta-intel
 	url = https://git.yoctoproject.org/git/meta-intel
-	branch = kirkstone
+	branch = scarthgap
 [submodule "sources/meta-tqmx86"]
 	path = sources/meta-tqmx86
 	url = ../meta-tqmx86.git
-	branch = kirkstone
+	branch = scarthgap
