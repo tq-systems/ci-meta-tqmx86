@@ -1,0 +1,29 @@
+{
+	"yocto-release": "scarthgap",
+	"yocto-machine-folder": "sources/meta-tqmx86/conf/machine",
+	"distros": [
+		{
+			"name": "poky",
+			"images": [
+				"core-image-base"
+			]
+		}
+	],
+	"machine_groups": [
+		{
+			"name": "TQMx86",
+			"pattern": "intel-x86-64-tqmx86"
+		}
+	],
+	"configs": [
+		{
+			"name": "x86",
+			"distros": [
+				"poky"
+			],
+			"groups": [
+				"TQMx86"
+			]
+		}
+	]
+}
