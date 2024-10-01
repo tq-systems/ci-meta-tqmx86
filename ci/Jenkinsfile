@@ -197,7 +197,7 @@ pipeline {
         DL_DIR = "shared-dl-dir"
         BUILD_DIR = "buildspace"
         DEPLOY_DIR = "deployment"
-        REPO_NAME = "ci-meta-tq"
+        REPO_NAME = "ci-meta-tqmx86"
     }
 
     stages {
