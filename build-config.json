@@ -24,6 +24,15 @@
 			"groups": [
 				"TQMx86"
 			]
+		},
+		{
+			"name": "x86-rt",
+			"distros": [
+				"poky"
+			],
+			"groups": [
+				"TQMx86"
+			]
 		}
 	]
 }
