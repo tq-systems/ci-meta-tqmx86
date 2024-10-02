@@ -98,6 +98,18 @@ DISTRO ?= "poky"
 #
 # Differing from the plain poky, enable systemd by default.
 INIT_MANAGER ?= "systemd"
+PACKAGECONFIG:pn-alsa-utils:append = " bat"
+CORE_IMAGE_EXTRA_INSTALL += " \
+    alsa-utils \
+    alsa-utils-alsabat \
+    can-utils \
+    cpufrequtils \
+    evtest \
+    fb-test \
+    i2c-tools \
+    libgpiod-tools \
+    lmsensors-sensors \
+"
 
 #
 # Package Management configuration
