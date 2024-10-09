@@ -12,7 +12,7 @@ git clone --branch=<branch-name> --recurse-submodules <url>
 ## License information
 
 This repo contains shell scripts released under the GPLv2, see the file
-[COPYING](COPYING).
+[COPYING.GPL-2](COPYING.GPL-2).
 
 ## Supported hardware
 
@@ -33,22 +33,19 @@ Then change to checked out dir and run:
 ```
 Here, `<builddir>` is a directory to be created as a workspace for your build,
 and `<config>` is the name of the configuration template to use.
-*ci-meta-tqmx86* only supports a single template `x86`.
+*ci-meta-tqmx86* supports two templates, `x86` and `x86-rt` (the latter
+selecting the PREEMPT_RT-enabled kernel `linux-yocto-rt` by default).
 
 You can override defaults by setting certain environment variables before
 sourcing the script:
 
-* `export MACHINE=<machine>` (default is `intel-corei7-64-tqmx86`, which
+* `export MACHINE=<machine>` (default is `intel-x86-64-tqmx86`, which
   supports all TQ-Systems x86 modules)
-* `export DISTRO=<distro>` (tested is `poky`; by default systemd and Wayland are
-  selected via `DISTRO_FEATURES`)
+* `export DISTRO=<distro>` (tested is `poky`)
 
 `./setup-environment` uses the requested configuration in
-`sources/template/conf/bblayers.conf.<config>` as initial template for your
-bblayer.conf
-
-Additionally some config variables are injected via `auto.conf.normal` from
-`sources/template/conf/`.
+`sources/template/conf/templates/<config>` as initial template for your
+`conf` directory.
 
 In case you have a `~/.oe` or `~/.yocto` dir a site.conf file will be symlinked
 to the conf dir of the buildir to allow machine specific overrrides. For
@@ -70,11 +67,8 @@ To return to an existing buildspace go to the checked out dir and
 ### Reproducible build environment
 
 Development and automated builds are supported by the scripts under CI and
-configuration under ./sources/templates, notably
-
-- sample bblayer.conf files
-- sample auto.conf files and inclusion fragments (see Yocto Project doc for
-  local.conf and auto.conf
+configuration under ./sources/templates, notably sample local.conf, auto.conf
+and bblayers.conf files (see the Yocto Project doc for details).
 
 ### Build all supported machines
 
@@ -84,9 +78,9 @@ use the CI helper script:
 ci/build-all <builddir> <config>
 ```
 
-Depending on the configuration, following images will be built:
+The following image will be built:
 
-* x86: core-image-base
+* core-image-base
 
 ### Clean build
 
@@ -108,7 +102,7 @@ The following configuration must added to `site.conf` or `local.conf`:
 SOURCE_MIRROR_URL ?= "file://<full path>/"
 INHERIT += "own-mirrors"
 
-PREMIRRORS_prepend = "\
+PREMIRRORS:prepend = "\
         git://.*/.* file://full path>/ \n \
         ftp://.*/.* file://full path>/ \n \
         http://.*/.* file://full path>/ \n \
