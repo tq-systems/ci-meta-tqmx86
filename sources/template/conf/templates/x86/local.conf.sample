@@ -94,12 +94,6 @@ DISTRO ?= "poky"
 # DISTRO ?= "poky-bleeding"
 
 #
-# TQMx86 defaults
-#
-# Differing from the plain poky, enable systemd by default.
-INIT_MANAGER ?= "systemd"
-
-#
 # Package Management configuration
 #
 # This variable lists which packaging formats to enable. Multiple package backends
