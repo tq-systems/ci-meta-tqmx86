@@ -216,7 +216,7 @@ pipeline {
                 axes {
                     axis {
                         name 'CONFIGURATION'
-                        values 'x86', 'x86-rt'
+                        values 'x86'
                     }
                 }
                 stages {
