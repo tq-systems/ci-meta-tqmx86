@@ -33,15 +33,15 @@ Then change to checked out dir and run:
 ```
 Here, `<builddir>` is a directory to be created as a workspace for your build,
 and `<config>` is the name of the configuration template to use.
-*ci-meta-tqmx86* supports two templates, `x86` and `x86-rt` (the latter
-selecting the PREEMPT_RT-enabled kernel `linux-yocto-rt` by default).
+*ci-meta-tqmx86* only supports the template `x86`.
 
 You can override defaults by setting certain environment variables before
 sourcing the script:
 
 * `export MACHINE=<machine>` (default is `intel-x86-64-tqmx86`, which
   supports all TQ-Systems x86 modules)
-* `export DISTRO=<distro>` (tested is `poky`)
+* `export DISTRO=<distro>` (tested are `pretzel` and `pretzel-rt`, the latter
+  selecting the PREEMPT_RT-enabled kernel `linux-yocto-rt` by default)
 
 `./setup-environment` uses the requested configuration in
 `sources/template/conf/templates/<config>` as initial template for your
